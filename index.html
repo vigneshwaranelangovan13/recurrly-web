@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recurrly — Track every subscription. Never overpay again.</title>
+  <meta name="description" content="Recurrly is the smartest way to track all your subscriptions. AI-powered PDF scanning, renewal reminders, and multi-currency support in one beautiful iOS app.">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Recurrly — Track every subscription">
+  <meta property="og:description" content="Never overpay again. Track all your subscriptions with AI-powered scanning.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://recurrly.shop">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800;9..144,900&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --cream: #fff9e3;
+      --cream-soft: #fffced;
+      --navy: #081126;
+      --navy-soft: #1a2238;
+      --accent: #ff6b35;
+      --accent-soft: #ffe5d9;
+      --muted: rgba(8, 17, 38, 0.55);
+      --border: rgba(8, 17, 38, 0.1);
+      --display: 'Fraunces', serif;
+      --body: 'Inter Tight', -apple-system, sans-serif;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+    
+    body {
+      font-family: var(--body);
+      background: var(--cream);
+      color: var(--navy);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: rgba(255, 249, 227, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .logo {
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -0.02em;
+      font-style: italic;
+    }
+    
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    
+    .nav-links a {
+      color: var(--navy);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+    
+    .nav-links a:hover { opacity: 0.6; }
+    
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 40px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      top: -10%; right: -10%;
+      width: 60%; height: 80%;
+      background: radial-gradient(circle at center, var(--accent-soft) 0%, transparent 70%);
+      filter: blur(60px);
+    }
+    
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      bottom: -10%; left: -10%;
+      width: 50%; height: 60%;
+      background: radial-gradient(circle at center, rgba(8, 17, 38, 0.08) 0%, transparent 70%);
+      filter: blur(60px);
+    }
+    
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--cream-soft);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 40px;
+      animation: slideUp 0.8s ease-out;
+    }
+    
+    .tag::before {
+      content: '';
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    
+    h1 {
+      font-family: var(--display);
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 400;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      margin-bottom: 32px;
+      animation: slideUp 1s ease-out 0.1s both;
+    }
+    
+    h1 em {
+      font-style: italic;
+      font-weight: 500;
+      color: var(--accent);
+    }
+    
+    .hero-sub {
+      font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+      max-width: 580px;
+      color: var(--muted);
+      margin-bottom: 48px;
+      font-weight: 400;
+      animation: slideUp 1s ease-out 0.2s both;
+    }
+    
+    .cta-group {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      animation: slideUp 1s ease-out 0.3s both;
+    }
+    
+    .btn-primary, .btn-secondary {
+      padding: 16px 32px;
+      border-radius: 100px;
+      font-family: var(--body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .btn-primary {
+      background: var(--navy);
+      color: var(--cream);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(8, 17, 38, 0.2);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: var(--navy);
+      border: 1px solid var(--border);
+    }
+    
+    .btn-secondary:hover {
+      background: var(--cream-soft);
+    }
+    
+    /* Sections */
+    section {
+      padding: 100px 40px;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .container-wide {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+      display: block;
+    }
+    
+    h2 {
+      font-family: var(--display);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 32px;
+    }
+    
+    h2 em { font-style: italic; color: var(--accent); }
+    
+    h3 {
+      font-family: var(--display);
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+    
+    h4 {
+      font-family: var(--body);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-top: 24px;
+      margin-bottom: 8px;
+    }
+    
+    /* Features grid */
+    .features-section { background: var(--cream-soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 60px;
+    }
+    
+    .feature {
+      padding: 32px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      transition: all 0.3s;
+    }
+    
+    .feature:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(8, 17, 38, 0.06);
+    }
+    
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+    
+    .feature p { color: var(--muted); font-size: 0.95rem; }
+    
+    /* Legal sections */
+    .legal-section { background: var(--cream); }
+    
+    .legal-section + .legal-section { border-top: 1px solid var(--border); }
+    
+    .legal-content {
+      font-size: 0.95rem;
+      color: var(--navy-soft);
+    }
+    
+    .legal-content p { margin-bottom: 16px; }
+    .legal-content ul { padding-left: 24px; margin-bottom: 16px; }
+    .legal-content li { margin-bottom: 8px; }
+    .legal-content strong { color: var(--navy); font-weight: 600; }
+    
+    .last-updated {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 32px;
+      font-style: italic;
+    }
+    
+    /* FAQ */
+    .faq {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    details {
+      background: var(--cream-soft);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      transition: all 0.3s;
+    }
+    
+    details[open] {
+      background: var(--cream);
+      box-shadow: 0 8px 24px rgba(8, 17, 38, 0.06);
+    }
+    
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1.05rem;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    summary::-webkit-details-marker { display: none; }
+    
+    summary::after {
+      content: '+';
+      font-size: 1.5rem;
+      font-weight: 300;
+      transition: transform 0.3s;
+    }
+    
+    details[open] summary::after {
+      transform: rotate(45deg);
+    }
+    
+    details p {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    
+    /* Contact card */
+    .contact-card {
+      background: var(--navy);
+      color: var(--cream);
+      padding: 48px;
+      border-radius: 32px;
+      margin-top: 48px;
+      text-align: center;
+    }
+    
+    .contact-card h3 {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      color: var(--cream);
+    }
+    
+    .contact-card p {
+      color: rgba(255, 249, 227, 0.7);
+      margin-bottom: 24px;
+    }
+    
+    .contact-card a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    
+    /* Footer */
+    footer {
+      padding: 60px 40px 40px;
+      border-top: 1px solid var(--border);
+      background: var(--cream-soft);
+    }
+    
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    
+    .footer-links {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    
+    .footer-links a:hover { color: var(--navy); }
+    
+    .copyright {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    
+    /* Animations */
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    
+    /* Mobile */
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .nav-links { gap: 16px; }
+      .nav-links a:not(.nav-cta) { display: none; }
+      .hero { padding: 100px 20px 60px; }
+      section { padding: 60px 20px; }
+      .contact-card { padding: 32px 24px; }
+      .footer-inner { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">Recurrly</div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#support">Support</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#terms">Terms</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+      <span class="tag">Now available on iOS</span>
+      <h1>Track every<br>subscription.<br><em>Never overpay</em> again.</h1>
+      <p class="hero-sub">
+        Recurrly automatically scans your bills with AI and tracks all your recurring expenses in one beautiful place. Stop wasting money on services you forgot about.
+      </p>
+      <div class="cta-group">
+        <a href="#features" class="btn-primary">Learn More →</a>
+        <a href="#support" class="btn-secondary">Get Support</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features-section" id="features">
+    <div class="container-wide">
+      <span class="section-label">What you get</span>
+      <h2>Everything you need to <em>take control</em> of your subscriptions.</h2>
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">🤖</div>
+          <h3>AI PDF Scanner</h3>
+          <p>Upload your bank statement and let AI automatically detect every subscription. No manual entry needed.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🔔</div>
+          <h3>Renewal Reminders</h3>
+          <p>Get notified before subscriptions auto-renew so you can cancel ones you no longer need.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">💱</div>
+          <h3>Multi-Currency</h3>
+          <p>Track expenses in USD, EUR, INR, GBP, and more. Perfect for global users with services across regions.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">👥</div>
+          <h3>Group Sharing</h3>
+          <p>Split shared subscriptions like Netflix Family or Spotify Duo with friends and family seamlessly.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🔒</div>
+          <h3>Secure by Design</h3>
+          <p>Bank-level encryption protects your data. We never sell your information, ever.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">📊</div>
+          <h3>Smart Insights</h3>
+          <p>See exactly where your money goes each month and find subscriptions you should cancel.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUPPORT -->
+  <section class="legal-section" id="support">
+    <div class="container">
+      <span class="section-label">Support</span>
+      <h2>Need <em>help?</em></h2>
+      <p class="legal-content" style="font-size: 1.1rem; margin-top: 8px;">
+        We're here to help. Check the FAQs below or reach out directly — we respond within 48 hours.
+      </p>
+
+      <div class="faq">
+        <details>
+          <summary>How do I add subscriptions to Recurrly?</summary>
+          <p>You can add subscriptions two ways: (1) Tap the "+" button and enter details manually, or (2) Upload a PDF bank statement and our AI will automatically detect all subscriptions for you.</p>
+        </details>
+        
+        <details>
+          <summary>How does the AI PDF scanner work?</summary>
+          <p>When you upload a PDF, we securely send it to OpenAI's GPT-4 to extract subscription names, prices, and billing frequencies. The data is then displayed for you to review and add. PDFs are not stored after processing.</p>
+        </details>
+        
+        <details>
+          <summary>How do I cancel a subscription I'm tracking?</summary>
+          <p>Recurrly tracks your subscriptions but cancellation happens directly with the service provider. Tap any subscription to see details and instructions for canceling that specific service.</p>
+        </details>
+        
+        <details>
+          <summary>Is my data private and secure?</summary>
+          <p>Yes. All data is encrypted in transit and at rest. Authentication is handled by Clerk (SOC 2 compliant) and data is stored on Supabase. We never sell your data and do not share it with advertisers.</p>
+        </details>
+        
+        <details>
+          <summary>How do I delete my account?</summary>
+          <p>Email us at elavignesh@gmail.com from your account email and we will delete your account and all associated data within 30 days. An in-app deletion option is coming in a future update.</p>
+        </details>
+        
+        <details>
+          <summary>Why isn't a subscription showing up after PDF scan?</summary>
+          <p>The AI may occasionally miss transactions that aren't clearly labeled as subscriptions. You can always add missing ones manually using the "+" button.</p>
+        </details>
+      </div>
+
+      <div class="contact-card">
+        <h3>Still need help?</h3>
+        <p>Email us and we'll get back to you within 48 hours.</p>
+        <a href="mailto:elavignesh@gmail.com">elavignesh@gmail.com</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRIVACY POLICY -->
+  <section class="legal-section" id="privacy">
+    <div class="container">
+      <span class="section-label">Legal</span>
+      <h2>Privacy <em>Policy</em></h2>
+      <p class="last-updated">Last updated: May 15, 2026</p>
+
+      <div class="legal-content">
+        <p>Recurrly ("we", "us", "our") is committed to protecting your privacy. This Privacy Policy explains what data we collect, how we use it, and your rights regarding your personal information.</p>
+
+        <h4>1. Information We Collect</h4>
+        <p>We collect the following types of information when you use Recurrly:</p>
+        <ul>
+          <li><strong>Account Information:</strong> Email address and password (managed securely by Clerk, our authentication provider).</li>
+          <li><strong>Subscription Data:</strong> Subscription names, prices, billing frequencies, and renewal dates you add to the app.</li>
+          <li><strong>Uploaded Documents:</strong> PDFs you upload for AI scanning are processed by OpenAI and not permanently stored.</li>
+          <li><strong>Usage Data:</strong> Anonymous usage statistics to improve the app.</li>
+        </ul>
+
+        <h4>2. How We Use Your Information</h4>
+        <p>We use your information to:</p>
+        <ul>
+          <li>Provide and maintain the Recurrly service</li>
+          <li>Track and display your subscriptions</li>
+          <li>Send renewal reminders</li>
+          <li>Improve our service</li>
+          <li>Respond to your support inquiries</li>
+        </ul>
+
+        <h4>3. Third-Party Services</h4>
+        <p>We use the following third-party services to operate Recurrly:</p>
+        <ul>
+          <li><strong>Clerk:</strong> Handles authentication. Your email and password are stored securely with Clerk. See <a href="https://clerk.com/privacy" style="color: var(--accent);">Clerk's Privacy Policy</a>.</li>
+          <li><strong>Supabase:</strong> Stores your subscription data in an encrypted database. See <a href="https://supabase.com/privacy" style="color: var(--accent);">Supabase's Privacy Policy</a>.</li>
+          <li><strong>OpenAI:</strong> Processes uploaded PDFs to extract subscription data. PDFs are sent to OpenAI's API and not retained after processing. See <a href="https://openai.com/privacy" style="color: var(--accent);">OpenAI's Privacy Policy</a>.</li>
+        </ul>
+
+        <h4>4. Data Security</h4>
+        <p>We implement industry-standard security measures including:</p>
+        <ul>
+          <li>End-to-end encryption for all data in transit (HTTPS/TLS)</li>
+          <li>Encryption at rest for all stored data</li>
+          <li>Secure authentication via OAuth standards</li>
+          <li>Regular security audits</li>
+        </ul>
+
+        <h4>5. Your Rights</h4>
+        <p>You have the right to:</p>
+        <ul>
+          <li><strong>Access:</strong> Request a copy of all data we have about you</li>
+          <li><strong>Correction:</strong> Update any inaccurate information</li>
+          <li><strong>Deletion:</strong> Request complete deletion of your account and data (processed within 30 days)</li>
+          <li><strong>Portability:</strong> Export your data in a standard format</li>
+          <li><strong>Objection:</strong> Object to any processing of your data</li>
+        </ul>
+        <p>To exercise these rights, email <a href="mailto:elavignesh@gmail.com" style="color: var(--accent);">elavignesh@gmail.com</a>.</p>
+
+        <h4>6. GDPR Compliance</h4>
+        <p>For users in the European Union, we comply with GDPR. We act as the data controller for the information you provide. The legal basis for processing your data is your consent and the performance of the service contract.</p>
+
+        <h4>7. CCPA Compliance</h4>
+        <p>For California residents, we comply with the California Consumer Privacy Act. We do not sell personal information. You have the right to know, delete, and opt-out of any sale of your personal data (we don't sell it anyway).</p>
+
+        <h4>8. Children's Privacy</h4>
+        <p>Recurrly is not intended for users under 13 years of age. We do not knowingly collect data from children under 13. If you believe a child has provided us with personal information, please contact us immediately.</p>
+
+        <h4>9. Data Retention</h4>
+        <p>We retain your data as long as your account is active. If you delete your account, all associated data is permanently deleted within 30 days, except where required by law.</p>
+
+        <h4>10. Changes to This Policy</h4>
+        <p>We may update this Privacy Policy from time to time. Material changes will be communicated via email or in-app notification. Continued use of the service after changes constitutes acceptance.</p>
+
+        <h4>11. Contact Us</h4>
+        <p>For any privacy-related questions or concerns, contact us at:</p>
+        <p><strong>Email:</strong> <a href="mailto:elavignesh@gmail.com" style="color: var(--accent);">elavignesh@gmail.com</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TERMS OF SERVICE -->
+  <section class="legal-section" id="terms">
+    <div class="container">
+      <span class="section-label">Legal</span>
+      <h2>Terms of <em>Service</em></h2>
+      <p class="last-updated">Last updated: May 15, 2026</p>
+
+      <div class="legal-content">
+        <p>Welcome to Recurrly. These Terms of Service ("Terms") govern your use of the Recurrly mobile application and related services ("Service"). By using Recurrly, you agree to these Terms.</p>
+
+        <h4>1. Acceptance of Terms</h4>
+        <p>By creating an account or using Recurrly, you agree to be bound by these Terms. If you disagree with any part of these Terms, you may not use the Service.</p>
+
+        <h4>2. Account Registration</h4>
+        <p>To use Recurrly, you must:</p>
+        <ul>
+          <li>Be at least 13 years of age</li>
+          <li>Provide accurate and complete registration information</li>
+          <li>Maintain the security of your password</li>
+          <li>Accept responsibility for all activities under your account</li>
+        </ul>
+
+        <h4>3. Acceptable Use</h4>
+        <p>You agree NOT to:</p>
+        <ul>
+          <li>Use the Service for any illegal purpose</li>
+          <li>Attempt to gain unauthorized access to other accounts or our systems</li>
+          <li>Upload malicious content or viruses</li>
+          <li>Reverse-engineer, decompile, or copy the Service</li>
+          <li>Use automated tools to access the Service without permission</li>
+          <li>Share your account with others</li>
+        </ul>
+
+        <h4>4. Intellectual Property</h4>
+        <p>Recurrly and all its content (excluding user-uploaded data) are owned by Vigneshwaran Elangovan and protected by copyright laws. You retain ownership of any data you upload, but grant us a license to process it for service purposes.</p>
+
+        <h4>5. User Content</h4>
+        <p>You are solely responsible for the content you upload to Recurrly. You represent that you have all necessary rights to such content and that it does not violate any laws or third-party rights.</p>
+
+        <h4>6. AI Processing Disclaimer</h4>
+        <p>Recurrly uses AI to detect subscriptions from uploaded documents. While we strive for accuracy, AI results may not always be 100% correct. You should always verify the extracted information.</p>
+
+        <h4>7. Service Availability</h4>
+        <p>We strive to keep Recurrly available 24/7, but we cannot guarantee uninterrupted service. We may suspend or modify the Service at any time for maintenance, updates, or other reasons.</p>
+
+        <h4>8. Termination</h4>
+        <p>We may terminate or suspend your account at our discretion if you violate these Terms. You may delete your account at any time by contacting support.</p>
+
+        <h4>9. Disclaimer of Warranties</h4>
+        <p>The Service is provided "AS IS" without warranties of any kind, either express or implied. We do not warrant that the Service will be error-free or uninterrupted.</p>
+
+        <h4>10. Limitation of Liability</h4>
+        <p>To the maximum extent permitted by law, Recurrly and its operators shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the Service.</p>
+
+        <h4>11. Indemnification</h4>
+        <p>You agree to indemnify and hold Recurrly harmless from any claims, damages, or expenses arising from your use of the Service or violation of these Terms.</p>
+
+        <h4>12. Changes to Terms</h4>
+        <p>We may update these Terms from time to time. Material changes will be communicated via email or in-app notification. Continued use after changes constitutes acceptance.</p>
+
+        <h4>13. Governing Law</h4>
+        <p>These Terms are governed by the laws of India, without regard to conflict of law principles.</p>
+
+        <h4>14. Contact</h4>
+        <p>For questions about these Terms, contact <a href="mailto:elavignesh@gmail.com" style="color: var(--accent);">elavignesh@gmail.com</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="legal-section" id="about">
+    <div class="container">
+      <span class="section-label">About</span>
+      <h2>Built for people who are <em>tired</em> of overpaying.</h2>
+      <div class="legal-content" style="font-size: 1.05rem; margin-top: 24px;">
+        <p>The average person has 12+ subscriptions and forgets about 40% of them. We built Recurrly because we were tired of paying for things we didn't use.</p>
+        <p>Recurrly is built with privacy at its core. Your data belongs to you, and we'll never sell it. We use industry-leading services like Clerk, Supabase, and OpenAI to deliver a fast, secure, and intelligent experience.</p>
+        <p>Recurrly was created by <strong>Vigneshwaran Elangovan</strong> in 2026.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="logo" style="margin-bottom: 8px;">Recurrly</div>
+        <p class="copyright">© 2026 Vigneshwaran Elangovan. All rights reserved.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#features">Features</a>
+        <a href="#support">Support</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#terms">Terms</a>
+        <a href="mailto:elavignesh@gmail.com">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
